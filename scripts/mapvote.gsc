@@ -5,7 +5,7 @@
 #include maps\mp\gametypes\_gamelogic;
 
 /*
-	Plutonium IW6 Mapvote
+	Plutonium S1 Mapvote
 	Developed by DoktorSAS
 	Version: v1.0.0
 
@@ -44,7 +44,7 @@ mv_Config()
 	level.__mapvote = [];
 	SetDvarIfNotInizialized("mv_time", 20);
 	level.__mapvote["time"] = getDvarInt("mv_time");
-	SetDvarIfNotInizialized("mv_maps", "mp_prisonbreak mp_dart mp_lonestar mp_frag mp_snow mp_fahrenheit mp_hashima mp_warhawk mp_sovereign mp_zebra mp_skeleton mp_chasm mp_flooded mp_strikezone mp_descent_new mp_dome_ns mp_ca_impact mp_ca_behemoth mp_battery3 mp_dig mp_favela_iw6 mp_pirate mp_conflict mp_mine mp_shipment_ns mp_zerosub mp_boneyard_ns mp_ca_red_river mp_ca_rumble mp_swamp");
+	SetDvarIfNotInizialized("mv_maps", "");
 
 	SetDvarIfNotInizialized("mv_credits", 1);
 	SetDvarIfNotInizialized("mv_socials", 1);
@@ -57,7 +57,7 @@ mv_Config()
 	SetDvarIfNotInizialized("mv_selectcolor", "lightgreen");
 	SetDvarIfNotInizialized("mv_backgroundcolor", "grey");
 	SetDvarIfNotInizialized("mv_gametypes", "dm;dm.cfg tdm;tdm.cfg dm;dm.cfg tdm;tdm.cfg sd;sd.cfg sd;sd.cfg");
-	setDvarIfNotInizialized("mv_excludedmaps", "");
+	setDvarIfNotInizialized("mv_excludedmaps", "mp_refraction mp_lab2 mp_comeback mp_laser2 mp_detroit mp_greenband mp_levity mp_instinct mp_recovery mp_venus mp_prison mp_solar mp_terrace mp_dam mp_torqued mp_clowntown3 mp_lost mp_urban mp_blackbox mp_climate_3 mp_perplex_1 mp_kremlin mp_bigbend mp_sector17 mp_fracture mp_lair mp_liberty mp_seoul2");
 }
 
 // Mapvote Logic
@@ -833,11 +833,17 @@ gametypeToName(gametype)
 	case "dm":
 		return "Free for all";
 
-	case "tdm":
+	case "war":
 		return "Team Deathmatch";
+	
+	case "twar":
+		return "Momentum";
 
 	case "sd":
 		return "Search & Destroy";
+	
+	case "sr":
+		return "Search & Rescue";
 
 	case "conf":
 		return "Kill Confirmed";
@@ -847,6 +853,15 @@ gametypeToName(gametype)
 
 	case "dom":
 		return "Domination";
+
+	case "infect":
+		return "Infected";
+	
+	case "hp":
+		return "Hardpoint";
+	
+	case "ball":
+		return "Uplink";
 
 	case "dem":
 		return "Demolition";
@@ -872,6 +887,7 @@ gametypeToName(gametype)
 	case "shrp":
 		return "Sharpshooter";
 	}
+
 	return "invalid";
 }
 
