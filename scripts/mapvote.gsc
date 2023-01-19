@@ -746,72 +746,66 @@ maptoname(mapid)
 maptoname(mapid)
 {
 	mapid = tolower(mapid);
-	if (mapid == "mp_prisonbreak")
-		return "Prision Break";
-	if (mapid == "mp_dart")
-		return "Octane";
-	if (mapid == "mp_lonestar")
-		return "Tremor";
-	if (mapid == "mp_frag")
-		return "Freight";
-	if (mapid == "mp_snow")
-		return "Whiteout";
-	if (mapid == "mp_fahrenheit")
-		return "Stormfront";
-	if (mapid == "mp_hashima")
-		return "Siege";
-	if (mapid == "mp_warhawk")
-		return "Warhawk";
-	if (mapid == "mp_sovereign")
-		return "Sovereign";
-	if (mapid == "mp_zebra")
+	if (mapid == "mp_refraction")
+    	return "Ascend";
+	if (mapid == "mp_lab2")
+		return "Bio Lab";
+	if (mapid == "mp_comeback")
+		return "Comeback";
+	if (mapid == "mp_laser2")
+		return "Defender";
+	if (mapid == "mp_detroit")
+		return "Detroit";
+	if (mapid == "mp_greenband")
+		return "Greenband";
+	if (mapid == "mp_levity")
+		return "Horizon";
+	if (mapid == "mp_instinct")
+		return "Instinct";
+	if (mapid == "mp_recovery")
+		return "Recovery";
+	if (mapid == "mp_venus")
+		return "Retreat";
+	if (mapid == "mp_prison")
+		return "Riot";
+	if (mapid == "mp_solar")
+		return "Solar";
+	if (mapid == "mp_terrace")
+		return "Terrace";
+	if (mapid == "mp_dam")
+		return "Atlas Gorge";
+	if (mapid == "mp_spark")
+		return "Chop Shop";
+	if (mapid == "mp_climate_3")
+		return "Climate";
+	if (mapid == "mp_sector17")
+		return "Compound";
+	if (mapid == "mp_lost")
+		return "Core";
+	if (mapid == "mp_torqued")
+		return "Drift";
+	if (mapid == "mp_fracture")
+		return "Fracture";
+	if (mapid == "mp_kremlin")
+		return "Kremlin";
+	if (mapid == "mp_lair")
 		return "Overload";
-	if (mapid == "mp_skeleton")
-		return "Stonehaven";
-	if (mapid == "mp_chasm")
-		return "Chasm";
-	if (mapid == "mp_flooded")
-		return "Flooded";
-	if (mapid == "mp_strikezone")
-		return "Strikezone";
-	if (mapid == "mp_descent_new")
-		return "Free Fall";
-
-	if (mapid == "mp_dome_ns")
-		return "Unearthed";
-	if (mapid == "mp_ca_impact")
-		return "Collision";
-	if (mapid == "mp_ca_behemoth")
-		return "Behemoth";
-	if (mapid == "mp_battery3")
-		return "Ruins";
-
-	if (mapid == "mp_dig")
-		return "Pharaoh";
-	if (mapid == "mp_favela_iw6")
-		return "Favela";
-	if (mapid == "mp_pirate")
-		return "Mutiny";
-	if (mapid == "mp_zulu")
-		return "Departed";
-
-	if (mapid == "mp_conflict")
-		return "Dynasty";
-	if (mapid == "mp_mine")
-		return "Goldrush";
-	if (mapid == "mp_shipment_ns")
-		return "Showtime";
-	if (mapid == "mp_zerosub")
-		return "Subzero";
-
-	if (mapid == "mp_boneyard_ns")
-		return "Ignition";
-	if (mapid == "mp_ca_red_river")
-		return "Containment";
-	if (mapid == "mp_ca_rumble")
-		return "Bayview";
-	if (mapid == "mp_swamp")
-		return "Fog";
+	if (mapid == "mp_bigben2")
+		return "Parliament";
+	if (mapid == "mp_perplex_1")
+		return "Perplex";
+	if (mapid == "mp_liberty")
+		return "Quarantine";
+	if (mapid == "mp_clowntown3")
+		return "Sideshow";
+	if (mapid == "mp_blackbox")
+		return "Site 244";
+	if (mapid == "mp_highrise2")
+		return "Skyrise";
+	if (mapid == "mp_seoul2")
+		return "Swarm";
+	if (mapid == "mp_urban")
+		return "Urban";
 
 	return mapid;
 }
