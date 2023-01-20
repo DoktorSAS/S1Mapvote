@@ -3,7 +3,7 @@
 #include maps\mp\gametypes\_hud_util;
 
 //#include maps\mp\gametypes\_gamelogic;
-#include _id_A789;
+//#include _id_A789;
 
 /*
 	Plutonium S1 Mapvote
@@ -437,18 +437,21 @@ main()
 	// replacefunc do not work as intended once patched remove // in front of one of the next 2 lines
 
 	// replacefunc( _id_A789, ::_id_A0D1);
-	// replacefunc( getfunction("_id_A789", "_id_A0D1"), ::_id_A0D1);
+	// replacefunc( getfunction("_id_A789", "_id_A0D1"), ::waittillfinalkillcamdone);
+
+	// replacefunc( maps\mp\gametypes\_gamelogic, ::waittillfinalkillcamdone);
+	// replacefunc( getfunction("maps\mp\gametypes\_gamelogic", "waittillfinalkillcamdone"), ::waittillfinalkillcamdone);
 }
 
-_id_A0D1()
+/*waittillfinalkillcamdone()
 {
-    if ( !isdefined( level._id_374B ) )
+    if ( !isdefined( level.finalkillcam_winner ) )
         return 0;
 
     level waittill( "final_killcam_done" );
 	startMapvote();
     return 1;
-}
+}*/
 
 // Utils
 maptoname(mapid)
