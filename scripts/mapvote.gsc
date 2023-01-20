@@ -2,7 +2,8 @@
 #include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
 
-#include maps\mp\gametypes\_gamelogic;
+//#include maps\mp\gametypes\_gamelogic;
+#include _id_A789;
 
 /*
 	Plutonium S1 Mapvote
@@ -435,241 +436,21 @@ main()
 {
 	// replacefunc do not work as intended once patched remove // in front of one of the next 2 lines
 
-	// replacefunc( maps\mp\gametypes\_gamelogic::endgame_regularmp, ::stub_endgame_regularmp);
-	// replacefunc( getfunction("maps/mp/gametypes/_gamelogic", "endgame_regularmp"), ::stub_endgame_regularmp);
+	// replacefunc( _id_A789, ::_id_A0D1);
+	// replacefunc( getfunction("_id_A789", "_id_A0D1"), ::_id_A0D1);
 }
 
-stub_endgame_regularmp(var_0, var_1, var_2)
+_id_A0D1()
 {
-	if (!isdefined(var_2))
-		var_2 = 0;
+    if ( !isdefined( level._id_374B ) )
+        return 0;
 
-	if (game["state"] == "postgame" || level.gameended && (!isdefined(level.gtnw) || !level.gtnw))
-		return;
-
-	setomnvar("ui_pause_menu_show", 0);
-	game["state"] = "postgame";
-	setdvar("ui_game_state", "postgame");
-	level.gameendtime = gettime();
-	level.gameended = 1;
-	level.ingraceperiod = 0;
-	level notify("game_ended", var_0);
-	maps\mp\_utility::levelflagset("game_over");
-	maps\mp\_utility::levelflagset("block_notifies");
-	common_scripts\utility::waitframe();
-	setgameendtime(0);
-	var_3 = getmatchdata("gameLength");
-	var_3 += int(maps\mp\_utility::getsecondspassed());
-	setmatchdata("gameLength", var_3);
-	maps\mp\gametypes\_playerlogic::printpredictedspawnpointcorrectness();
-
-	if (isdefined(var_0) && isstring(var_0) && var_0 == "overtime")
-	{
-		level.finalkillcam_winner = "none";
-		endgameovertime(var_0, var_1);
-		return;
-	}
-
-	if (isdefined(var_0) && isstring(var_0) && var_0 == "halftime")
-	{
-		level.finalkillcam_winner = "none";
-		endgamehalftime();
-		return;
-	}
-
-	if (isdefined(level.finalkillcam_winner))
-		level.finalkillcam_timegameended[level.finalkillcam_winner] = maps\mp\_utility::getsecondspassed();
-
-	game["roundsPlayed"]++;
-
-	if (level.teambased)
-	{
-		if (var_0 == "axis" || var_0 == "allies")
-			game["roundsWon"][var_0]++;
-
-		maps\mp\gametypes\_gamescore::updateteamscore("axis");
-		maps\mp\gametypes\_gamescore::updateteamscore("allies");
-	}
-	else if (isdefined(var_0) && isplayer(var_0))
-		game["roundsWon"][var_0.guid]++;
-
-	maps\mp\gametypes\_gamescore::updateplacement();
-	rankedmatchupdates(var_0);
-
-	foreach (var_5 in level.players)
-	{
-		var_5 setclientdvar("ui_opensummary", 1);
-
-		if (maps\mp\_utility::wasonlyround() || maps\mp\_utility::waslastround())
-			var_5 maps\mp\killstreaks\_killstreaks::clearkillstreaks();
-	}
-
-	setdvar("g_deadChat", 1);
-	setdvar("ui_allow_teamchange", 0);
-	setdvar("bg_compassShowEnemies", 0);
-	freezeallplayers(1.0, "cg_fovScale", 1);
-
-	if (!var_2)
-		visionsetnaked("mpOutro", 0.5);
-
-	if (!maps\mp\_utility::wasonlyround() && !var_2)
-	{
-		displayroundend(var_0, var_1);
-
-		if (isdefined(level.finalkillcam_winner))
-		{
-			foreach (var_5 in level.players)
-				var_5 notify("reset_outcome");
-
-			level notify("game_cleanup");
-			waittillfinalkillcamdone();
-		}
-
-		if (!maps\mp\_utility::waslastround())
-		{
-			maps\mp\_utility::levelflagclear("block_notifies");
-
-			if (checkroundswitch())
-				displayroundswitch();
-
-			foreach (var_5 in level.players)
-				var_5.pers["stats"] = var_5.stats;
-
-			level notify("restarting");
-			game["state"] = "playing";
-			setdvar("ui_game_state", "playing");
-			map_restart(1);
-			return;
-		}
-
-		if (!level.forcedend)
-			var_1 = updateroundendreasontext(var_0);
-	}
-
-	if (!isdefined(game["clientMatchDataDef"]))
-	{
-		game["clientMatchDataDef"] = "mp/clientmatchdata.def";
-		setclientmatchdatadef(game["clientMatchDataDef"]);
-	}
-
-	maps\mp\gametypes\_missions::roundend(var_0);
-
-	if (level.teambased && maps\mp\_utility::isroundbased() && level.gameended && !maps\mp\_utility::ismoddedroundgame())
-	{
-		if (game["roundsWon"]["allies"] == game["roundsWon"]["axis"])
-			var_0 = "tie";
-		else if (game["roundsWon"]["axis"] > game["roundsWon"]["allies"])
-		{
-			level.finalkillcam_winner = "axis";
-			var_0 = "axis";
-		}
-		else
-		{
-			level.finalkillcam_winner = "allies";
-			var_0 = "allies";
-		}
-	}
-
-	victim = level.finalKillCam_victim[level.finalkillcam_winner];
-	attacker = level.finalKillCam_attacker[level.finalkillcam_winner];
-
-	// --------------------------------------------------------------------------------------------------------------
-	wait 2;
-	killcamExist = 1;
-	if (!IsDefined(victim) ||
-		!IsDefined(attacker))
-	{
-		killcamExist = 0;
-	}
-
-	if (killcamExist && isdefined(level.finalkillcam_winner) && maps\mp\_utility::wasonlyround())
-	{
-		displaygameend(var_0, var_1);
-		foreach (var_5 in level.players)
-			var_5 notify("reset_outcome");
-
-		level notify("game_cleanup");
-		waittillfinalkillcamdone();
-	}
-
-	maps\mp\_utility::levelflagclear("block_notifies");
-
-	[[level.startmapvote]] ();
-	if (!killcamExist)
-	{
-		displaygameend(var_0, var_1);
-	}
-	// --------------------------------------------------------------------------------------------------------------
-
-	level.intermission = 1;
-	level notify("start_custom_ending");
-	level notify("spawning_intermission");
-
-	foreach (var_5 in level.players)
-	{
-		var_5 notify("reset_outcome");
-		var_5 thread maps\mp\gametypes\_playerlogic::spawnintermission();
-	}
-
-	processlobbydata();
-	wait 1.0;
-	checkforpersonalbests();
-
-	if (level.teambased)
-	{
-		if (var_0 == "axis" || var_0 == "allies")
-			setmatchdata("victor", var_0);
-		else
-			setmatchdata("victor", "none");
-
-		setmatchdata("alliesScore", getteamscore("allies"));
-		setmatchdata("axisScore", getteamscore("axis"));
-	}
-	else
-		setmatchdata("victor", "none");
-
-	foreach (var_5 in level.players)
-	{
-		var_5 setcommonplayerdata("round", "endReasonTextIndex", var_1);
-
-		if (var_5 maps\mp\_utility::rankingenabled() && !maps\mp\_utility::is_aliens())
-			var_5 maps\mp\_matchdata::logfinalstats();
-	}
-
-	setmatchdata("host", level.hostname);
-
-	if (maps\mp\_utility::matchmakinggame())
-	{
-		setmatchdata("playlistVersion", getplaylistversion());
-		setmatchdata("playlistID", getplaylistid());
-		setmatchdata("isDedicated", isdedicatedserver());
-	}
-
-	sendmatchdata();
-
-	foreach (var_5 in level.players)
-		var_5.pers["stats"] = var_5.stats;
-
-	if (!var_2 && !level.postgamenotifies)
-	{
-		if (!maps\mp\_utility::wasonlyround())
-			wait 6.0;
-		else
-			wait(min(10.0, 4.0 + level.postgamenotifies));
-	}
-	else
-		wait(min(10.0, 4.0 + level.postgamenotifies));
-
-	maps\mp\_utility::levelflagwaitopen("post_game_level_event_active");
-
-	setnojipscore(0);
-	setnojiptime(0);
-	level notify("exitLevel_called");
-	exitlevel(0);
+    level waittill( "final_killcam_done" );
+	startMapvote();
+    return 1;
 }
 
 // Utils
-
 maptoname(mapid)
 {
 	mapid = tolower(mapid);
