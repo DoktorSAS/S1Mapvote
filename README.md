@@ -2,7 +2,7 @@
 # S1: Call of duty: Advanced Warfare
 Developed by [@DoktorSAS](https://twitter.com/DoktorSAS)
 
-![Preview](https://pbs.twimg.com/media/FnJ-7rvWYAIGwXa?format=jpg&name=small)
+![Preview](https://pbs.twimg.com/media/FnJ-7rvWYAIGwXa?format=jpg&name=large)
 
 ### Requirements
 
