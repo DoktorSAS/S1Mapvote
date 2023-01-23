@@ -45,7 +45,7 @@ mv_Config()
 	level.__mapvote = [];
 	SetDvarIfNotInizialized("mv_time", 20);
 	level.__mapvote["time"] = getDvarInt("mv_time");
-	SetDvarIfNotInizialized("mv_maps", "");
+	SetDvarIfNotInizialized("mv_maps", "mp_refraction mp_lab2 mp_comeback mp_laser2 mp_detroit mp_greenband mp_levity mp_instinct mp_recovery mp_venus mp_prison mp_solar mp_terrace mp_dam mp_torqued mp_clowntown3 mp_lost mp_urban mp_blackbox mp_climate_3 mp_perplex_1 mp_kremlin mp_bigbend mp_sector17 mp_fracture mp_lair mp_liberty mp_seoul2");
 
 	SetDvarIfNotInizialized("mv_credits", 1);
 	SetDvarIfNotInizialized("mv_socials", 1);
@@ -58,7 +58,7 @@ mv_Config()
 	SetDvarIfNotInizialized("mv_selectcolor", "lightgreen");
 	SetDvarIfNotInizialized("mv_backgroundcolor", "grey");
 	SetDvarIfNotInizialized("mv_gametypes", "dm;dm.cfg tdm;tdm.cfg dm;dm.cfg tdm;tdm.cfg sd;sd.cfg sd;sd.cfg");
-	setDvarIfNotInizialized("mv_excludedmaps", "mp_refraction mp_lab2 mp_comeback mp_laser2 mp_detroit mp_greenband mp_levity mp_instinct mp_recovery mp_venus mp_prison mp_solar mp_terrace mp_dam mp_torqued mp_clowntown3 mp_lost mp_urban mp_blackbox mp_climate_3 mp_perplex_1 mp_kremlin mp_bigbend mp_sector17 mp_fracture mp_lair mp_liberty mp_seoul2");
+	setDvarIfNotInizialized("mv_excludedmaps", "");
 }
 
 // Mapvote Logic
@@ -230,11 +230,11 @@ mv_PlayerFixAngle()
 	self endon("disconnect");
 	level endon("game_ended");
 	level waittill("mv_start_vote");
-	angles = self getPlayerAngles();
+	angles = self.angles;
 
 	self waittill_any("left", "right");
-	if (self getPlayerAngles() != angles)
-		self setPlayerAngles(angles);
+	if (self.angles != angles)
+		self.angles = angles;
 }
 
 mv_VoteManager()
@@ -454,79 +454,6 @@ main()
 }*/
 
 // Utils
-maptoname(mapid)
-{
-	mapid = tolower(mapid);
-	if (mapid == "mp_prisonbreak")
-		return "Prision Break";
-	if (mapid == "mp_dart")
-		return "Octane";
-	if (mapid == "mp_lonestar")
-		return "Tremor";
-	if (mapid == "mp_frag")
-		return "Freight";
-	if (mapid == "mp_snow")
-		return "Whiteout";
-	if (mapid == "mp_fahrenheit")
-		return "Stormfront";
-	if (mapid == "mp_hashima")
-		return "Siege";
-	if (mapid == "mp_warhawk")
-		return "Warhawk";
-	if (mapid == "mp_sovereign")
-		return "Sovereign";
-	if (mapid == "mp_zebra")
-		return "Overload";
-	if (mapid == "mp_skeleton")
-		return "Stonehaven";
-	if (mapid == "mp_chasm")
-		return "Chasm";
-	if (mapid == "mp_flooded")
-		return "Flooded";
-	if (mapid == "mp_strikezone")
-		return "Strikezone";
-	if (mapid == "mp_descent_new")
-		return "Free Fall";
-
-	if (mapid == "mp_dome_ns")
-		return "Unearthed";
-	if (mapid == "mp_ca_impact")
-		return "Collision";
-	if (mapid == "mp_ca_behemoth")
-		return "Behemoth";
-	if (mapid == "mp_battery3")
-		return "Ruins";
-
-	if (mapid == "mp_dig")
-		return "Pharaoh";
-	if (mapid == "mp_favela_iw6")
-		return "Favela";
-	if (mapid == "mp_pirate")
-		return "Mutiny";
-	if (mapid == "mp_zulu")
-		return "Departed";
-
-	if (mapid == "mp_conflict")
-		return "Dynasty";
-	if (mapid == "mp_mine")
-		return "Goldrush";
-	if (mapid == "mp_shipment_ns")
-		return "Showtime";
-	if (mapid == "mp_zerosub")
-		return "Subzero";
-
-	if (mapid == "mp_boneyard_ns")
-		return "Ignition";
-	if (mapid == "mp_ca_red_river")
-		return "Containment";
-	if (mapid == "mp_ca_rumble")
-		return "Bayview";
-	if (mapid == "mp_swamp")
-		return "Fog";
-
-	return mapid;
-}
-
 maptoname(mapid)
 {
 	mapid = tolower(mapid);
