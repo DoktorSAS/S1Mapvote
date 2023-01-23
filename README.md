@@ -2,7 +2,7 @@
 # S1: Call of duty: Advanced Warfare
 Developed by [@DoktorSAS](https://twitter.com/DoktorSAS)
 
-![Preview](https://static.vecteezy.com/ti/vettori-gratis/p3/4243615-vettore-di-sfondo-creativo-in-arrivo-teaser-gratuito-vettoriale.jpg&name=large)
+![Preview](https://pbs.twimg.com/media/FnJ-7rvWYAIGwXa?format=jpg&name=small)
 
 ### Requirements
 
