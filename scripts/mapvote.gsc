@@ -353,7 +353,7 @@ mv_ServerUI()
 	level endon("game_ended");
 
 	buttons = level createServerFontString("objective", 1.6);
-	buttons setText("^3[{+speed_throw}]              ^7Press ^3[{+gostand}] ^7or ^3[{+activate}] ^7to select              ^3[{+attack}]");
+	buttons setSafeText(self, "^3[{+speed_throw}]              ^7Press ^3[{+gostand}] ^7or ^3[{+activate}] ^7to select              ^3[{+attack}]");
 	buttons setPoint("center", "center", 0, 80);
 	buttons.hideWhenInMenu = 0;
 
@@ -387,8 +387,8 @@ mv_ServerUI()
 	mv_socialname = getDvar("mv_socialname");
 	mv_sociallink = getDvar("mv_sociallink");
 	credits = level createServerFontString("objective", 1.2);
-	credits setPoint("center", "center", -300, 150);
-	credits setText(mv_sentence + "\nDeveloped by @^5DoktorSAS ^7\n" + mv_socialname + ": " + mv_sociallink);
+	credits setPoint("center", "center", -250, 150);
+	credits setSafeText(self, mv_sentence + "\nDeveloped by @^5DoktorSAS ^7\n" + mv_socialname + ": " + mv_sociallink);
 
 	timer = level createServerFontString("objective", 2);
 	timer setPoint("center", "center", 0, -140);
@@ -653,12 +653,16 @@ GetColor(color)
 CreateString(input, font, fontScale, align, relative, x, y, color, alpha, glowColor, glowAlpha, sort, isLevel)
 {
 	if (!isDefined(isLevel))
+	{
 		hud = self createFontString(font, fontScale);
+		hud setSafeText(self, input);
+	}
 	else
+	{
 		hud = level createServerFontString(font, fontScale);
-
-	hud setText(input);
-
+		hud setText(input);
+	}
+		
 	hud.x = x;
 	hud.y = y;
 	hud.align = align;
@@ -708,7 +712,7 @@ CreateRectangle(align, relative, x, y, width, height, color, shader, sort, alpha
 DrawText(text, font, fontscale, x, y, color, alpha, glowcolor, glowalpha, sort)
 {
 	hud = self createfontstring(font, fontscale);
-	hud setText(text);
+	hud setSafeText(self, text);
 	hud.x = x;
 	hud.y = y;
 	hud.color = color;
@@ -759,4 +763,164 @@ affectElement(type, time, value)
 		self.alpha = value;
 	if (type == "color")
 		self.color = value;
+}
+// CMT Frosty Codes
+initOverFlowFix()
+{ // tables
+    self.stringTable = [];
+    self.stringTableEntryCount = 0;
+    self.textTable = [];
+    self.textTableEntryCount = 0;
+    if (!isDefined(level.anchorText))
+    {
+        level.anchorText = createServerFontString("default", 1.5);
+        level.anchorText setSafeText(self,"anchor");
+        level.anchorText.alpha = 0;
+        level.stringCount = 0;
+        level thread monitorOverflow();
+    }
+}
+// strings cache serverside -- all string entries are shared by every player
+monitorOverflow()
+{
+    level endon("disconnect");
+    for (;;)
+    {
+        if (level.stringCount >= 60)
+        {
+            level.anchorText clearAllTextAfterHudElem();
+            level.stringCount = 0;
+            foreach (player in level.players)
+            {
+                player purgeTextTable();
+                player purgeStringTable();
+                player recreateText();
+            }
+        }
+        wait 0.05;
+    }
+}
+setSafeText(player, text)
+{
+    stringId = player getStringId(text);
+    // if the string doesn't exist add it and get its id
+    if (stringId == -1)
+    {
+        player addStringTableEntry(text);
+        stringId = player getStringId(text);
+    }
+    // update the entry for this text element player
+    editTextTableEntry(self.textTableIndex, stringId);
+    self setText(self, text);
+}
+recreateText()
+{
+    foreach (entry in self.textTable)
+        entry.element setSafeText(self, lookUpStringById(entry.stringId));
+}
+addStringTableEntry(string)
+{ // create new entry
+    entry = spawnStruct();
+    entry.id = self.stringTableEntryCount;
+    entry.string = string;
+    self.stringTable[self.stringTable.size] = entry;
+    // add new entry
+    self.stringTableEntryCount++;
+    level.stringCount++;
+}
+lookUpStringById(id)
+{
+    string = "";
+    foreach (entry in self.stringTable)
+    {
+        if (entry.id == id)
+        {
+            string = entry.string;
+            break;
+        }
+    }
+    return string;
+}
+getStringId(string)
+{
+    id = -1;
+    foreach (entry in self.stringTable)
+    {
+        if (entry.string == string)
+        {
+            id = entry.id;
+            break;
+        }
+    }
+    return id;
+}
+getStringTableEntry(id)
+{
+    stringTableEntry = -1;
+    foreach (entry in self.stringTable)
+    {
+        if (entry.id == id)
+        {
+            stringTableEntry = entry;
+            break;
+        }
+    }
+    return stringTableEntry;
+}
+purgeStringTable()
+{
+    stringTable = [];
+    // store all used strings
+    foreach (entry in self.textTable)
+        stringTable[stringTable.size] = getStringTableEntry(entry.stringId);
+    self.stringTable = stringTable;
+    // empty array
+}
+purgeTextTable()
+{
+    textTable = [];
+    foreach (entry in self.textTable)
+    {
+        if (entry.id != -1)
+            textTable[textTable.size] = entry;
+    }
+    self.textTable = textTable;
+}
+addTextTableEntry(element, stringId)
+{
+    entry = spawnStruct();
+    entry.id = self.textTableEntryCount;
+    entry.element = element;
+    entry.stringId = stringId;
+    element.textTableIndex = entry.id;
+    self.textTable[self.textTable.size] = entry;
+    self.textTableEntryCount++;
+}
+editTextTableEntry(id, stringId)
+{
+    foreach (entry in self.textTable)
+    {
+        if (entry.id == id)
+        {
+            entry.stringId = stringId;
+            break;
+        }
+    }
+}
+deleteTextTableEntry(id)
+{
+    foreach (entry in self.textTable)
+    {
+        if (entry.id == id)
+        {
+            entry.id = -1;
+            entry.stringId = -1;
+        }
+    }
+}
+clear(player)
+{
+    if (self.type == "text")
+        player deleteTextTableEntry(self.textTableIndex);
+    self destroy();
 }
