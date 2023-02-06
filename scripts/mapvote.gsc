@@ -2,11 +2,8 @@
 #include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
 
-//#include maps\mp\gametypes\_gamelogic;
-//#include _id_A789;
-
 /*
-	Plutonium S1 Mapvote
+	H1-MOD Cod: Modern Warfare Remastered Mapvote
 	Developed by DoktorSAS
 	Version: v1.0.0
 
@@ -67,7 +64,7 @@ mv_Begin()
 	level endon("mv_ended");
 
 	if (getDvarInt("mv_enable") != 1) // Check if mapvote is enable
-		return;						  // End if the mapvote its not enable
+		return;	// End if the mapvote its not enable
 
 	if (!isDefined(level.mapvote_started))
 	{
@@ -435,10 +432,6 @@ FixBlur() // Patch blur effect
 main()
 {
 	// replacefunc do not work as intended once patched remove // in front of one of the next 2 lines
-
-	// replacefunc( _id_A789, ::_id_A0D1);
-	// replacefunc( getfunction("_id_A789", "_id_A0D1"), ::waittillfinalkillcamdone);
-
 	// replacefunc( maps\mp\gametypes\_gamelogic, ::waittillfinalkillcamdone);
 	// replacefunc( getfunction("maps\mp\gametypes\_gamelogic", "waittillfinalkillcamdone"), ::waittillfinalkillcamdone);
 }
