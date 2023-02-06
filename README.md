@@ -1,5 +1,5 @@
 
-# S1: Call of duty: Advanced Warfare
+# S1: Call of Duty: Advanced Warfare
 Developed by [@DoktorSAS](https://twitter.com/DoktorSAS)
 
 ![Preview](https://pbs.twimg.com/media/FnJ-7rvWYAIGwXa?format=jpg&name=large)
